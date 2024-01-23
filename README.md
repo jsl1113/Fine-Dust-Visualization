@@ -20,10 +20,10 @@
 
 ## 2. 시스템 구성
 > 시스템 구성도 <br><br>
-  <img src="https://github.com/jsl1113/Fine-Dust-Visualization/assets/55522275/6a20e46f-e790-4b45-99c4-ae21a23fab17" width="600" height="300"/><br>
+  <img src="https://github.com/jsl1113/Fine-Dust-Visualization/assets/55522275/6a20e46f-e790-4b45-99c4-ae21a23fab17" width="500" height="300"/><br>
   
 > pgAdmin을 이용한 데이터베이스  <br><br>
-  <img src="https://github.com/jsl1113/Fine-Dust-Visualization/assets/55522275/16d55158-77e9-44e9-8e7e-22a772088f8d" width="600" height="300"/><br>
+  <img src="https://github.com/jsl1113/Fine-Dust-Visualization/assets/55522275/16d55158-77e9-44e9-8e7e-22a772088f8d" width="500" height="300"/><br>
 
 
 ## 3. Airkorea 측정소, 대기오염 정보 API 파싱
