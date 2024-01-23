@@ -1,0 +1,112 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+
+    <title>미세먼지 데이터 - 학교 정보 검색</title>
+
+</head>
+<body>
+
+    <table class="table" border="1" bordercolor="black" width="800">
+        <thread>
+            <tr align="center">
+                <h2 style="display: flex; justify-content: center; align-items: center; font-weight: bold;" colspan="5">{{name}} 정보</h2></p>
+            </tr>
+        </thread>
+        <tbody></tbody>
+            <tr style="background-color:azure;" align="center">
+                <th>학교 ID</th>
+                <th>학교 이름</th>
+                <th>학교 타입</th>
+                <th>설립 구분</th>
+                <th>설립 유형</th>
+            
+                {% for school_info in detail_info%}
+                
+            <tr  align="center">
+                {% for info in school_info %}
+                <td style="cursor: pointer;" onclick="location.href='{{info}}'">{{info}}</td>
+                {%endfor%}
+
+                {%endfor%}
+            </tr>
+            
+            <tr></tr>
+        
+            <tr style="background-color:azure;" align="center">
+                <th>주야 구분</th>
+                <th>전화 번호</th>
+                <th>남녀공학 구분</th>
+                <th>우편 번호</th>
+                <th>홈페이지 주소</th>
+
+                {% for school_info in detail_info2%}
+                <tr align="center">
+                    {% for info in school_info %}
+                    <td style="cursor: pointer;" onclick="location.href='{{info}}'">{{info}}</td>
+                    {%endfor%}
+                    {%endfor%}
+                </tr>
+            <tr style="background-color:azure;" align="center">
+                <th>설립일</th>
+                <th>도로명 주소</th>
+                <th>위도</th>
+                <th>경도</th>
+                <th>지도</th>
+                {% for school_info in detail_info3%}
+            <tr align="center">
+                {% for info in school_info %}
+                    <td style="cursor: pointer;" onclick="location.href='{{info}}'">{{info}}</td>
+                {%endfor%}
+                {%endfor%}
+                {% for school_info in detail_info%}
+                    <form method="GET" action="/show_map">
+                        <input type="hidden" name={{school_info}} id={{school_info}} value={{school_info}}>
+                        <td><button style="background-color:indigo; border-radius: 10%; color: azure;" type="submit">이동</button></td>
+                    </form>
+                {%endfor%}
+            </tr>
+            <tr>
+            <tr align="center">
+                <th style="background-color: thistle;" colspan = "3">{{name}} 주변 실시간 미세먼지 데이터</th>
+                <th style="background-color:beige;" colspan = "2">측정소 까지의 거리(km) {{dis}} km</th>
+            </tr>
+            </tr>
+            <tr style="background-color:azure;" align="center">
+                <th>시간</th>
+                <th>PM10 VAlUE</th>
+                <th>PM10 VAlUE_24시간</th>
+                <th>PM25 VAlUE</th>
+                <th>PM25 VAlUE_24시간</th>
+            </tr>
+        
+
+        <tbody>
+            {% for i in pmdata %}
+            <tr align="center">
+                {% for j in i %}
+                    {%for k in j%}
+                        <td>{{k}}</td>
+                    {%endfor%}    
+                {%endfor%}
+            </tr>
+            {%endfor%}
+        </tbody>
+
+    </table>
+
+</body>
+<script src="{% static 'js/scripts.js'%}"></script>
+</html>

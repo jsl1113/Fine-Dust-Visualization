@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+	<link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+
+	<title>미세먼지 데이터 - 학교 정보 검색</title>
+</head>
+<!-- bg-dark -->
+<body>
+	<div style="align-items:center; justify-content: center; display: flex; ">
+	<div style="margin: 1em; margin-right: 5%; margin-top: 3em;" >
+	<a href="http://127.0.0.1:8000/" style="align-items: center; justify-content: center; display: flex; flex-direction:column; color: black; font-weight: bold; padding-top: 0.5em; text-decoration: none; font-size: 30px;">
+	학교이름검색<br ><br>
+	</a>
+	</div>
+
+	<form class=" d-md-inline-block  " method="POST" class="post-form" action="{% url 'view_name' %}">		
+		<nav class=" navbar ">
+		<div class="navbar-brand ps-3"></div>
+		<div class="input-group">
+		<input class="form-control input-group" type="text" name="school_name" value="">
+		<button style="background-color:indigo; border-radius: 10%; color: azure;" type="submit">검색</button>
+		</div>
+		
+	</nav>
+
+	</div>
+	</form>
+	<div style="align-items:center; justify-content: center; display: flex;  background-color: thistle; font-weight: bold;">
+
+	<h2 style="margin-right: 1em; align-items: center; margin-top: 1.4em; font-weight: bold;">지역검색<br><br></h2>
+
+	<form method="POST" class="post-form" action="{% url 'main' %}">
+		<!-- 도시 선택 -->
+		<select name="select_city" style="width:120px;height:25px; border-radius: 4px; height: 35px;">
+			{% if selected_city %}
+			<option value={{selected_city}}>{{selected_city}}</option>
+			{%endif%}
+
+			{% for i in city_list %}
+			{%for city in i%}
+			<option value={{city}}>{{city}}</option>
+			{%endfor%}
+			{%endfor%}
+		</select>
+		<button style="background-color:indigo; border-radius: 10%; color: azure;" type="submit">선택</button>
+		<!-- 구역 선택  -->
+		<select  name="select_district" style="width:120px;height:25px; border-radius: 4px; height: 35px;">
+			{% if not selected_district %}
+			<option>도시선택</option>
+			{%endif%}
+			{% for i in district_list %}
+			{% for district in i %}
+			<option value={{district}}>{{district}}</option>
+			{%endfor%}
+			{%endfor%}
+		</select>
+		<!---->
+		<select name="select_school_type" style="width:120px;height:25px; border-radius: 4px; height: 35px;">
+			<option value="초등학교">초등학교</option>
+			<option value="중학교">중학교</option>
+			<option value="고등학교">고등학교</option>
+			<option value="특수학교">특수학교</option>
+		</select>
+		<button style="background-color:indigo; border-radius: 10%; color: azure;" type="submit">찾기</button>
+		
+	</form>
+	</div>
+
+
+	
+	{% if not find_school == "" %}
+	<div style="font-weight: bold; padding-top: 1em; font-size: 20px; justify-content: center; align-items: center; display: flex;">
+		검색결과 
+		</div>
+	<table class="table" border="1" bordercolor="black" width="1300">
+		<thead style="background-color: thistle; " >
+		<tr align="center">
+			<th colspan="8">{{selected_city}} {{selected_district}} 의 학교 정보</th>
+			</p>
+		</tr>
+		</thead>
+
+		<tbody>
+		<tr align="center">
+			<td>학교 ID</td>
+			<td>학교 이름</td>
+			<td>홈페이지</td>
+			<td>도로명 주소</td>
+			<td>전화번호</td>
+			<td>지도</td>
+			<td>자세히</td>
+			<td>미세먼지 정보</td>
+		</tr>
+
+		{% for school_info in find_school%}
+		<tr align="center">
+			{% for info in school_info %}
+			<td style="cursor: pointer;" onclick="location.href='{{info}}'">{{info}}</td>
+			{%endfor%}
+			<form method="GET" action="/show_map">
+				<input type="hidden" name={{school_info}} id={{school_info}} value={{school_info}}>
+				<td><button style="background-color:indigo; border-radius: 10%; color: azure;" type="submit">지도</button></td>
+			</form>
+
+			<form method="GET" action="/detail">
+				<input type="hidden" name={{school_info}} id={{school_info}} value={{school_info}}>
+				<td><button style="background-color:indigo; border-radius: 10%; color: azure;" type="submit">자세히</button></td>
+			</form>
+
+			<form method="GET" action="/new_detail">
+				<input type="hidden" name={{school_info}} id={{school_info}} value={{school_info}}>
+				<td><button style="background-color:indigo; border-radius: 10%; color: azure;" type="submit">바로가기</button></td>
+			</form>
+		</tr>
+	
+
+		{%endfor%}
+		{%endif%}
+		</tbody>
+	</table>
+
+		{% if not find_school_name == "" %}
+		<div style="font-weight: bold; padding-top: 1em; font-size: 20px; justify-content: center; align-items: center; display: flex;">
+			검색결과 
+			</div>
+		<table class="table" border="0" bordercolor="black" width="1300">
+			<thead style="background-color: thistle; ">
+				<tr align="center">
+					<th colspan="8">학교 이름에 {{school_name}}이 들어간 학교 정보</th>
+					</p>
+				</tr>
+			</thead>
+
+
+			<tr align="center">
+				<td>학교 ID</td>
+				<td>학교 이름</td>
+				<td>홈페이지</td>
+				<td>도로명 주소</td>
+				<td>전화번호</td>
+				<td>지도</td>
+				<td>자세히</td>
+				<td>미세먼지 정보</td>
+			</tr>
+			
+			{% for school_info in find_school_name%}
+			<tr align="center">
+				{% for info in school_info %}
+				<td style="cursor: pointer;" onclick="location.href='{{info}}'">{{info}}</td>
+				{%endfor%}
+				<form method="GET" action="/show_map">
+					<input type="hidden" name={{school_info}} id={{school_info}} value={{school_info}}>
+					<td><button style="background-color:indigo; border-radius: 10%; color: azure;" type="submit">지도</button></td>
+				</form>
+
+				<form method="GET" action="/detail">
+					<input type="hidden" name={{school_info}} id={{school_info}} value={{school_info}}>
+					<td><button style="background-color:indigo; border-radius: 10%; color: azure;" type="submit">자세히</button></td>
+				</form>
+
+				<form method="GET" action="/new_detail">
+					<input type="hidden" name={{school_info}} id={{school_info}} value={{school_info}}>
+					<td><button style="background-color:indigo; border-radius: 10%; color: azure;" type="submit">바로가기</button></td>
+				</form>
+			</tr>
+		
+						
+			{%endfor%}
+			{%endif%}
+		</tbody>
+		</table>
+</body>
+
+<script src="{% static 'js/scripts.js'%}"></script>
+</html>

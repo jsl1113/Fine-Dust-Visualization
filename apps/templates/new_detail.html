@@ -1,0 +1,350 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+  <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+
+  <script>
+    pmdata_list = {{ tmp_test | safe }};
+
+    console.log(pmdata_list[0][0]);
+    console.log(pmdata_list[0][1]);
+
+    // 측정소 1,2,3 PM10 데이터 세팅
+    var dataPoint1_pm10 = [];
+    for (var i = 0; i < pmdata_list.length; i++) {
+      dataPoint1_pm10.push({
+        x: new Date(pmdata_list[i][0]),
+        y: parseFloat(pmdata_list[i][1])
+      });
+    }
+
+
+    var dataPoint2_pm10 = [];
+    for (var i = 0; i < pmdata_list.length; i++) {
+      dataPoint2_pm10.push({
+        x: new Date(pmdata_list[i][0]),
+        y: parseFloat(pmdata_list[i][3])
+      });
+    }
+
+
+    var dataPoint3_pm10 = [];
+    for (var i = 0; i < pmdata_list.length; i++) {
+      dataPoint3_pm10.push({
+        x: new Date(pmdata_list[i][0]),
+        y: parseFloat(pmdata_list[i][5])
+      });
+    }
+
+    // 측정소1,2,3 PM25 데이터 받기
+    var dataPoint1_pm25 = [];
+    for (var i = 0; i < pmdata_list.length; i++) {
+      dataPoint1_pm25.push({
+        x: new Date(pmdata_list[i][0]),
+        y: parseFloat(pmdata_list[i][2])
+      });
+    }
+
+    var dataPoint2_pm25 = [];
+    for (var i = 0; i < pmdata_list.length; i++) {
+      dataPoint2_pm25.push({
+        x: new Date(pmdata_list[i][0]),
+        y: parseFloat(pmdata_list[i][4])
+      });
+    }
+
+
+    var dataPoint3_pm25 = [];
+    for (var i = 0; i < pmdata_list.length; i++) {
+      dataPoint3_pm25.push({
+        x: new Date(pmdata_list[i][0]),
+        y: parseFloat(pmdata_list[i][6])
+      });
+    }
+
+    name = {{ tmp_station_name | safe }};
+    name_array = name.split(',');
+    school_name = {{ tmp_school_name | safe }};
+
+  </script>
+  <title>Document</title>
+</head>
+
+<body>
+  {% load static %}
+  <!-- float: left; margin: 30px;  -->
+  <div
+    style="height: 20vh; background-color: slateblue; align-items: center; justify-content: center; display: flex; background-image: url(../static/img/made.png); background-repeat: no-repeat; background-size: 100% 100%;">
+    <a href="javascript:window.history.back();"
+      style="color: white; font-size: 80px; font-weight: bold; text-decoration:none;">{{ school_name }}</a>
+  </div>
+
+  <div class="container"
+    style="display: flex; align-items: center; justify-content: center;  width: 80%; margin-top: 3em;">
+    <div style="margin-right: 2%;">
+      <table style="width: 80vh; border: 1;" align="center">
+        <tr style="font-weight: bold; background-color: thistle;">
+          <td colspan="7" align="center">{{ school_name }}</td>
+        </tr>
+
+
+        <tr align="center">
+          <!-- 측정소 목록 -->
+          <td></td>
+          {% for station_name in station_name_list %}
+          <td colspan="2">{{station_name}}</td>
+          {%endfor%}
+        </tr>
+
+        <tr>
+          <td style="width: 250px; background-color: thistle; font-weight: bold;" align="center">학교와 측정소 간 거리(km)</td>
+          {% for tm_dis in tm_dis_list %}
+          <td colspan="2" align="center">{{tm_dis}}</td>
+          {%endfor%}
+        </tr>
+
+        <tr style="background-color:peachpuff; font-weight: bold;" align="center">
+          <td>시간</td>
+          <td>PM10</td>
+          <td>PM25</td>
+          <td>PM10</td>
+          <td>PM25</td>
+          <td>PM10</td>
+          <td>PM25</td>
+        </tr>
+
+        {% for i in pmdata_list %}
+        <tr align="center" style="background-color:aliceblue;">
+          {% for j in i %}
+          <td>{{j}}</td>
+          {%endfor%}
+        </tr>
+        {%endfor%}
+
+      </table>
+    </div>
+
+
+    <script type="text/javascript">
+      window.onload = function () {
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+          theme: "light1", // "light2", "dark1", "dark2"
+          animationEnabled: true, // change to true      
+          title: {
+            text: "PM10"
+          },
+
+          legend: {
+            cursor: "pointer",
+            horizontalAlign: "right",
+            verticalAlign: "top"
+          },
+
+          data: [
+            {
+              name: name_array[0],
+              showInLegend: true,
+              markerType: "none",
+              type: "spline",
+              indexLabelFontSize: 16,
+              //데이터 넣는 곳
+              dataPoints: dataPoint1_pm10
+            },
+
+
+            {
+              name: name_array[1],
+              showInLegend: true,
+              markerType: "none",
+              type: "spline",
+              indexLabelFontSize: 16,
+              //데이터 넣는 곳
+              dataPoints: dataPoint2_pm10
+            },
+
+            {
+              name: name_array[2],
+              showInLegend: true,
+              markerType: "none",
+              type: "spline",
+              indexLabelFontSize: 16,
+              //데이터 넣는 곳
+              dataPoints: dataPoint3_pm10
+            },
+
+          ]
+        });
+        chart.render();
+
+        var chart1 = new CanvasJS.Chart("chartContainer1", {
+          theme: "light1", // "light2", "dark1", "dark2"
+          animationEnabled: true, // change to true      
+          title: {
+            text: "PM2.5"
+          },
+
+          
+          legend: {
+            cursor: "pointer",
+            horizontalAlign: "right",
+            verticalAlign: "top"
+          },
+
+
+          data: [
+            {
+              name: name_array[0],
+              showInLegend: true,
+              markerType: "none",
+              type: "spline",
+              indexLabelFontSize: 16,
+              //데이터 넣는 곳
+              dataPoints: dataPoint1_pm25
+            },
+
+            {
+              name: name_array[1],
+              showInLegend: true,
+              markerType: "none",
+              type: "spline",
+              indexLabelFontSize: 16,
+              //데이터 넣는 곳
+              dataPoints: dataPoint2_pm25
+            },
+
+            {
+              name: name_array[2],
+              showInLegend: true,
+              markerType: "none",
+              type: "spline",
+              indexLabelFontSize: 16,
+              //데이터 넣는 곳
+              dataPoints: dataPoint3_pm25
+            },
+
+          ]
+        });
+        chart1.render();
+
+      }
+    </script>
+
+
+    <HR>
+    <div class="container"
+      style="flex-direction: column; float: left; justify-content: space-between;  margin: 0%; width: 100vh; margin-left: 2%;">
+      <div class="item" id="chartContainer" style="height: 400px; width: 800px; border:1px solid; border-bottom: 0px;">
+      </div>
+      <div class="item" id="chartContainer1" style="height: 400px; width: 800px; border:1px solid; border-top: 0px;">
+      </div>
+    </div>
+  </div>
+
+
+  <!-- <div class="map-container" style="flex-direction: row;"> -->
+  <!-- 여기서 부터 지도 -->
+
+  <div style="justify-content: center; align-items: center; display: flex;">
+    <div id="map" style="width: 78%; height: 1000px; margin-top: 2%; ">
+    </div>
+  </div>
+
+
+  <!-- 지도 띄우기 -->
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d8820240450dacfcd7562fdb138f148c"></script>
+  <script>
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+      mapOption = {
+        center: new kakao.maps.LatLng("{{school_mapx}}", "{{school_mapy}}"), // 지도의 중심좌표
+        level: 7 // 지도의 확대 레벨
+      };
+
+    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+  </script>
+  <!-- </div> -->
+  </div>
+
+
+  <script>
+
+    // 위경도 데이터 파싱
+    var attractions = JSON.parse("{{ attractionJson|escapejs }}");
+    console.log(attractions)
+
+    var positions = [];
+    for (var i = 0; i < Object.keys(attractions).length; i++) {
+      var content = {
+        title: "측정소",
+        latlng: new kakao.maps.LatLng(attractions[i]['mapx'], attractions[i]['mapy']),
+        detail: "디테일입니다 추후 추가예정",
+      }
+      positions.push(content);
+    };
+    console.log(positions);
+    // 마커 이미지의 이미지 주소입니다
+    var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+    var imageSize = new kakao.maps.Size(30, 40);
+    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize)
+
+    //미세먼지 측정소+학교 마커 찍기
+    for (var i = 0; i < positions.length; i++) {
+
+      //학교 마커는 빨간색 마커
+      if (i == positions.length - 1) {
+        imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png";
+        imageSize = new kakao.maps.Size(40, 40);
+        markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize)
+      }
+
+      // 마커를 생성합니다
+      var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: positions[i].latlng, // 마커를 표시할 위치
+        title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        image: markerImage // 마커 이미지
+      });
+    }
+
+
+    // 마커 클릭 시, 창 나오게 하기
+    (function (marker, place) {
+      kakao.maps.event.addListener(marker, 'click', function () {
+        var overlay = new kakao.maps.CustomOverlay({
+          // 오버레이에 띄울 내용
+          content: '<div class="wrap">' +
+            '    <div class="info">' +
+            '        <div class="title">' +
+            place.title +
+            '        </div>' +
+            '        <div class="body">' +
+            '            <div class="desc">' +
+            '                <div class="ellipsis">' + place.detail + '</div>' +
+            '            </div>' +
+            '        </div>' +
+            '    </div>' +
+            '</div>',
+          map: map,
+          position: marker.getPosition()
+        });
+        // 아무데나 클릭하게되면 overlay를 끄기
+        kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+          overlay.setMap(null)
+        })
+        console.log(overlay);
+        overlay.setMap(map);
+      })
+    })(marker, positions[i])
+  </script>
+
+
+</body>
+<script src="{% static 'js/scripts.js'%}"></script>
+
+</html>
