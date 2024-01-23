@@ -5,7 +5,7 @@
 
 + [1. 개요](#1-개요)
 + [2. 시스템 구성](#2-시스템-구성)
-+ [3. Airkorea 측정소/대기오염 정보 API 파싱](#3-Airkorea-측정소/대기오염-정보-API-파싱)
++ [3. Airkorea 측정소/대기오염 정보 API 파싱](#3-Airkorea-측정소-대기오염-정보-API-파싱)
 + [4. 근접 측정소 미세먼지 데이터 시각화](#4-근접-측정소-미세먼지-데이터-시각화)
 + [5. 화면](#5-화면)
 + [6. Reference](#6-reference)
@@ -26,7 +26,7 @@
   <img src="https://github.com/jsl1113/Fine-Dust-Visualization/assets/55522275/16d55158-77e9-44e9-8e7e-22a772088f8d" width="600" height="300"/><br>
 
 
-## 3. Airkorea 측정소/대기오염 정보 API 파싱
+## 3. Airkorea 측정소, 대기오염 정보 API 파싱
 
 
 
